@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Playlist Player</title>
+    <style>
+        body {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <select id="playlistSelect">
+            <!-- Options will be dynamically loaded here -->
+        </select>
+        <button id="loadPlaylist">Load Playlist</button>
+    </div>
+
+    <div id="player"></div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var player;
+
+        // Function to load playlists from JSON and create dropdown options
+        function loadPlaylists() {
+            fetch('playlists.json')
+                .then(response => response.json())
+                .then(playlists => {
+                    const select = document.getElementById('playlistSelect');
+                    playlists.forEach(playlist => {
+                        const option = document.createElement('option');
+                        option.value = playlist.id;
+                        option.textContent = playlist.name;
+                        select.appendChild(option);
+                    });
+                })
+                .then(() => {
+                    // Automatically load the first playlist after populating the dropdown
+                    var selectedPlaylist = document.getElementById('playlistSelect').value;
+                    loadPlayer(selectedPlaylist);
+                })
+                .catch(error => console.error('Error loading playlists:', error));
+        }
+
+        function onYouTubeIframeAPIReady() {
+            loadPlaylists();
+        }
+
+        function loadPlayer(playlistId) {
+            // ... (rest of your existing loadPlayer function)
+        }
+
+        // ... (rest of your existing code)
+    </script>
+</body>
+</html>
